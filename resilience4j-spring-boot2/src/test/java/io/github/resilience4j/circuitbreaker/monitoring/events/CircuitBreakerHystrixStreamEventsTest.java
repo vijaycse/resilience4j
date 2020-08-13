@@ -5,6 +5,7 @@ import io.github.resilience4j.common.circuitbreaker.monitoring.endpoint.CircuitB
 import io.github.resilience4j.service.test.DummyService;
 import io.github.resilience4j.service.test.TestApplication;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,7 +59,7 @@ public class CircuitBreakerHystrixStreamEventsTest {
         assert (circuitBreakerEventsBefore.getCircuitBreakerEvents().size() < circuitBreakerEventsAfter.getCircuitBreakerEvents().size());
         assert circuitBreakerEventsAfter.getCircuitBreakerEvents().size() == 2;
         Thread.sleep(1000); // for webClient to complete the subscribe operation
-        assert (events.size() == 2);
+        assertThat (events.size() == 2);
     }
 
     @Test
@@ -76,7 +77,7 @@ public class CircuitBreakerHystrixStreamEventsTest {
         CircuitBreakerEventsEndpointResponse circuitBreakerEventsAfter = circuitBreakerEvents(ACTUATOR_CIRCUITBREAKEREVENTS + "/backendA");
         Thread.sleep(1000); //  webClient to complete the subscribe operation
         assert (circuitBreakerEventsBefore.getCircuitBreakerEvents().size() < circuitBreakerEventsAfter.getCircuitBreakerEvents().size());
-        assert (events.size() == 2);
+        assertThat (events.size() == 2);
     }
 
     @Test
@@ -93,8 +94,8 @@ public class CircuitBreakerHystrixStreamEventsTest {
         }
         CircuitBreakerEventsEndpointResponse circuitBreakerEventsAfter = circuitBreakerEvents(ACTUATOR_CIRCUITBREAKEREVENTS + "/backendA");
         Thread.sleep(1000); // for webClient to complete the subscribe operation
-        assert (circuitBreakerEventsBefore.getCircuitBreakerEvents().size() < circuitBreakerEventsAfter.getCircuitBreakerEvents().size());
-        assert (events.size() == 1);
+        assertThat (circuitBreakerEventsBefore.getCircuitBreakerEvents().size() < circuitBreakerEventsAfter.getCircuitBreakerEvents().size());
+        assertThat (events.size() == 1);
     }
 
     private List<ServerSentEvent<String>> getServerSentEvents(String s) {
